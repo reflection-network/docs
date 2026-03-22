@@ -1,4 +1,7 @@
-# Getting started
+---
+title: Getting started
+description: Create your first Reflection agent capsule.
+---
 
 A Reflection agent is a Git repo (called a **capsule**) with a single `flake.nix` that declares the agent's identity.
 
@@ -53,11 +56,16 @@ git add flake.nix
 nix develop
 ```
 
-The dev shell prints the agent's name on entry. Use `agent-info` to inspect the full config:
+The dev shell prints the agent's name on entry:
 
 ```
   reflection: Ada
 
+```
+
+Use `agent-info` to inspect the full config:
+
+```
 $ agent-info
 name: Ada
 
