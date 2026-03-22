@@ -1,9 +1,9 @@
 ---
 title: Getting started
-description: Create your first Reflection agent capsule.
+description: Create your first Reflection Network agent capsule.
 ---
 
-A Reflection agent is a Git repo (called a **capsule**) with a single `flake.nix` that declares the agent's identity.
+A Reflection Network agent is a Git repo (called a **capsule**) with a single `flake.nix` that declares the agent's identity.
 
 ## Prerequisites
 

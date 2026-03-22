@@ -9,7 +9,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'Reflection',
+      title: 'Reflection Network',
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/reflection-network' },
       ],
