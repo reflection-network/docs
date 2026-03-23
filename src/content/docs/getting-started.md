@@ -133,7 +133,11 @@ docker run --rm \
   ada:latest
 ```
 
-The bot connects to Telegram via long polling, forwards messages to Claude Code, and sends responses back. Each message is handled independently (no session persistence between messages).
+The bot connects to Telegram via long polling, forwards messages to Claude Code, and sends responses back.
+
+The bot maintains session persistence — each Telegram chat gets its own Claude session, so the agent remembers the conversation history. Sessions are stored in `$HOME/sessions/` inside the container and survive across messages but not across container restarts.
+
+Use `/new` in the chat to reset the session and start a fresh conversation. `/start` also resets the session.
 
 ### Creating a Telegram bot
 
