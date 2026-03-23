@@ -74,83 +74,8 @@ You are Ada, a helpful assistant.
 You respond in the same language the user writes to you.
 ```
 
-## Building a container
+## Next steps
 
-Every capsule can be built into a Docker image:
-
-```bash
-nix build .#packages.x86_64-linux.docker
-docker load < result
-docker run --rm ada:latest
-```
-
-The image name is derived from the agent name (lowercased, spaces replaced with hyphens). The container runs as a non-root `agent` user (uid 1000) with a writable home directory at `/home/agent`.
-
-The default entrypoint is `agent-info` — the agent identifies itself. Adapters override this with their own runtime.
-
-## Adding a runtime with an adapter
-
-The base image only contains the agent's identity. To make the agent actually talk, you need an **adapter** — a Nix flake that adds an LLM runtime and transport layer.
-
-`adapter-claude` adds Claude Code as the backend and Telegram as the transport. Switch your capsule to use it by changing one import:
-
-```nix
-{
-  description = "My agent capsule";
-
-  inputs = {
-    adapter-claude.url = "github:reflection-network/adapter-claude";
-  };
-
-  outputs = { self, adapter-claude }:
-    adapter-claude.lib.mkAgent {
-      agent = {
-        name = "Ada";
-        system-prompt = ''
-          You are Ada, a helpful assistant.
-          You respond in the same language the user writes to you.
-        '';
-      };
-    };
-}
-```
-
-The agent config stays the same — only the import changes. The adapter provides:
-
-- `devShells.default` — same dev shell as before (from agent-nix)
-- `packages.docker` — Docker image with Claude Code, Telegram transport, and all dependencies
-
-### Running the bot
-
-Build and load the image as before, then run with a Telegram bot token and Claude credentials:
-
-```bash
-nix build .#packages.x86_64-linux.docker
-docker load < result
-docker run --rm \
-  -e TELEGRAM_BOT_TOKEN=<your-token> \
-  -v ~/.claude/.credentials.json:/home/agent/.claude/.credentials.json \
-  ada:latest
-```
-
-The bot connects to Telegram via long polling, forwards messages to Claude Code, and sends responses back.
-
-The bot maintains session persistence — each Telegram chat gets its own Claude session, so the agent remembers the conversation history. Sessions are stored in `$HOME/sessions/` inside the container and survive across messages but not across container restarts.
-
-Use `/new` in the chat to reset the session and start a fresh conversation. `/start` also resets the session.
-
-### Creating a Telegram bot
-
-1. Message [@BotFather](https://t.me/BotFather) on Telegram
-2. Send `/newbot` and follow the prompts
-3. Copy the bot token — this becomes your `TELEGRAM_BOT_TOKEN`
-
-### The adapter pattern
-
-Adapters are the translation layer between your agent's universal config and a specific runtime backend. The same capsule can run on different backends by switching the adapter import:
-
-| Adapter | Backend | Status |
-|---------|---------|--------|
-| `adapter-claude` | Claude Code CLI + Telegram | Available |
-
-More adapters can be built by anyone — the interface is `lib.mkAgent { agent }`, same as agent-nix.
+- [Build a Docker container](/building-containers) from your capsule
+- [Add an adapter](/adapters) to give your agent a real backend and transport
+- [Set up the dev launcher](/launcher) for automatic rebuilds on git push

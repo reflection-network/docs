@@ -18,6 +18,8 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { label: 'Getting started', slug: 'getting-started' },
+            { label: 'Building containers', slug: 'building-containers' },
+            { label: 'Adapters', slug: 'adapters' },
             { label: 'Dev launcher', slug: 'launcher' },
           ],
         },
