@@ -73,3 +73,17 @@ system prompt:
 You are Ada, a helpful assistant.
 You respond in the same language the user writes to you.
 ```
+
+## Building a container
+
+Every capsule can be built into a Docker image:
+
+```bash
+nix build .#packages.x86_64-linux.docker
+docker load < result
+docker run --rm ada:latest
+```
+
+The image name is derived from the agent name (lowercased, spaces replaced with hyphens). The container runs as a non-root `agent` user (uid 1000) with a writable home directory at `/home/agent`.
+
+The default entrypoint is `agent-info` — the agent identifies itself. Adapters override this with their own runtime.
