@@ -18,6 +18,7 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { label: 'Getting started', slug: 'getting-started' },
+            { label: 'Dev launcher', slug: 'launcher' },
           ],
         },
       ],
