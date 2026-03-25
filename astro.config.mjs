@@ -15,6 +15,12 @@ export default defineConfig({
       ],
       sidebar: [
         {
+          label: 'Concepts',
+          items: [
+            { label: 'Architecture', slug: 'architecture' },
+          ],
+        },
+        {
           label: 'Guides',
           items: [
             { label: 'Getting started', slug: 'getting-started' },
