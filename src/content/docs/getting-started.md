@@ -47,6 +47,34 @@ Both fields are validated at evaluation time. Missing or empty values produce a 
 error: assertion failed: agent.name must be a non-empty string
 ```
 
+## Optional fields
+
+These fields are used by adapters that support them. Adapters that don't recognize a field simply ignore it. All optional fields are validated when present — a field with a wrong type fails the build.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `provider` | string | LLM provider (e.g. `"anthropic"`, `"claude-code"`, `"openai"`) |
+| `model` | string | Model identifier (e.g. `"claude-sonnet-4-5-20250929"`) |
+| `transports.telegram.enable` | bool | Enable the Telegram channel |
+| `transports.telegram.allowed-users` | list of strings | Telegram usernames allowed to interact with the bot |
+| `transports.telegram.mention-only` | bool | Only respond when @mentioned in groups |
+
+Example with all fields:
+
+```nix
+agent = {
+  name = "Ada";
+  system-prompt = "You are Ada, a helpful assistant.";
+  provider = "claude-code";
+  model = "claude-sonnet-4-5-20250929";
+  transports.telegram.enable = true;
+  transports.telegram.allowed-users = [ "alice" "bob" ];
+  transports.telegram.mention-only = true;
+};
+```
+
+A capsule with just `name` and `system-prompt` is valid. See [Adapters](/adapters) for which fields each adapter supports.
+
 ## Try it
 
 ```bash
@@ -68,11 +96,15 @@ Use `agent-info` to inspect the full config:
 ```
 $ agent-info
 name: Ada
+provider: claude-code
+model: claude-sonnet-4-5-20250929
 
 system prompt:
 You are Ada, a helpful assistant.
 You respond in the same language the user writes to you.
 ```
+
+The `provider` and `model` lines only appear when those fields are set in the agent config.
 
 ## Next steps
 
